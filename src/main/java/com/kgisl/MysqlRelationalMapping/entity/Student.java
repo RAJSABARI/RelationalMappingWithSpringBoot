@@ -2,6 +2,9 @@ package com.kgisl.MysqlRelationalMapping.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +21,10 @@ public class Student {
     private int mark;
     private String name;
 
+    public Student() {
+    }
+
+   @JsonBackReference
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Laptop> laptops;
 
@@ -59,6 +66,4 @@ public class Student {
         this.name = name;
     }
 
-    public Student() {
-    }
 }

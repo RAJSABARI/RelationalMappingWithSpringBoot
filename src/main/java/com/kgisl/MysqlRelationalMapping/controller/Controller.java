@@ -1,22 +1,85 @@
 package com.kgisl.MysqlRelationalMapping.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.kgisl.MysqlRelationalMapping.entity.Laptop;
 import com.kgisl.MysqlRelationalMapping.entity.Student;
 import com.kgisl.MysqlRelationalMapping.service.Servicee;
 
 @RestController
 @RequestMapping("/api")
 public class Controller {
-   @Autowired
-   private Servicee service;
 
-    @PostMapping("/add")
-    public void  add (@RequestBody Student st){
-         service.add(st);
+    @Autowired
+    private Servicee service;
+
+    @PostMapping("/post")   //used to add student and multiple laptops
+    public void add(@RequestBody Student st) {
+        service.add(st);
     }
-     
+
+    @GetMapping("/getAllStudents") //used to getallstudents
+    public List<Student> student() {
+        return service.get();
+    }
+
+    @GetMapping("/getAllLaptops") //used to getallLaptops
+    public List<Laptop> getAllLaptops() {
+        return service.getAllLaptops();
+    }
+
+    @GetMapping("/laptopById/{id}")     //used to getspecific laptop using id
+    public Laptop laptopById(@PathVariable("id") Long lapId) {
+        return service.laptopById(lapId);
+    }
+
+    @GetMapping("/studentById/{id}")   //used to getspecific student using id
+    public Student studentById(@PathVariable("id") Long stId) {
+        return service.studentById(stId);
+    }
+
+    @GetMapping("/sId/{id}") //used display the laptops specific studentid
+    public List<Laptop> getLaptopsByStudentId(@PathVariable("id") Long lapId) {
+        return service.getLaptopsByStudentId(lapId);
+    }
+
+    @GetMapping("/lId/{id}")  //used display the laptops specific studentid
+    public Student getStudentByLaptopId(@PathVariable("id") Long id) {
+        return service.getStudentByLaptopId(id);
+    }
+
+    @PutMapping("/updatestudent/{id}")  //used to update specific student
+    public void updatestudent(@PathVariable("id") Long studentrollnumber, @RequestBody Student student) {
+        service.updatestudent(studentrollnumber, student);
+    }
+
+    @PutMapping("/updatelaptop/{id}")  //used to update specific laptops
+    public void updatelaptop(@PathVariable("id") Long laptopId, @RequestBody Laptop laptop) {
+        service.updatelaptop(laptopId, laptop);
+    }
+
+    @DeleteMapping("/deleteByLaptopId/{id}") //used to delete specificLaptop
+    public void deleteByLaptopId(@PathVariable("id") Long id) {
+        service.deleteByLaptopId(id);
+    }
+
+    @DeleteMapping("/deleteByStudentId/{id}") //used to delete specificStudent
+    public void deleteByStudentId(@PathVariable("id") Long id) {
+        /*
+      * this is parent database cannot delete but using orphanRemoval = true
+      in student entity class it makes easier when we delete specific student
+      it also delete in laptop table
+      */
+        service.deleteByStudentId(id);
+    }
 }

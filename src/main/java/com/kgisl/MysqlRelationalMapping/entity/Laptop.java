@@ -22,12 +22,7 @@ public class Laptop {
     @JoinColumn(name = "student_rollno")
     private Student student;
 
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
+    public Laptop() {
     }
 
     public Laptop(String lname, Long lno) {
@@ -46,6 +41,13 @@ public class Laptop {
 
     public String getLname() {
         return lname;
+    }
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public void setLname(String lname) {
