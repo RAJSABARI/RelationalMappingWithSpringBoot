@@ -1,9 +1,8 @@
 package com.kgisl.MysqlRelationalMapping.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,13 +19,15 @@ public class Student {
     private Long rollno;
     private int mark;
     private String name;
-
+    private int age;
+    private String gender;
+    
     public Student() {
     }
 
-   @JsonBackReference
+//    @JsonBackReference
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Laptop> laptops;
+    private List<Laptop> laptops= new ArrayList<>();
 
     public List<Laptop> getLaptops() {
         return laptops;
@@ -64,6 +65,22 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
 }

@@ -17,8 +17,8 @@ public class Laptop {
     private Long lno;
     private String lname;
 
-    @ManyToOne
-    @JsonIgnore
+     @JsonIgnore
+     @ManyToOne
     @JoinColumn(name = "student_rollno")
     private Student student;
 
