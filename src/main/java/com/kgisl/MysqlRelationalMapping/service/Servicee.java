@@ -17,12 +17,11 @@ import jakarta.transaction.Transactional;
 public class Servicee {
 
     @Autowired
-    private Repo repo;
+    private Repo studentrepo;
 
     @Autowired
     private Lap lapo;
 
-  
 
     @Transactional
     public void add(Student st) {
@@ -31,15 +30,15 @@ public class Servicee {
             ll.setStudent(st);
         }
 
-        repo.save(st);
+        studentrepo.save(st);
 
     }
 
     public List<Student> get() {
-        return repo.findAll();
+        return studentrepo.findAll();
     }
     public List<Student> getAllStudentsWithLaptops() {
-        return repo.findAll(); 
+        return studentrepo.findAll(); 
     }
 
     public Laptop laptopById(Long lapId) {
@@ -47,7 +46,7 @@ public class Servicee {
     }
 
     public Student studentById(Long stId) {
-        return repo.findById(stId).orElse(null);
+        return studentrepo.findById(stId).orElse(null);
     }
 
     public List<Laptop> getLaptopsByStudentId(Long id){
@@ -56,13 +55,13 @@ public class Servicee {
 
     public void updatestudent(Long studentrollnumber,Student student) {
        
-      Student stu=repo.findById(studentrollnumber).orElseThrow();
+      Student stu=studentrepo.findById(studentrollnumber).orElseThrow();
       stu.setName(student.getName());
       stu.setAge(student.getAge());
       stu.setGender(student.getGender());
       stu.setMark(student.getMark());
-      repo.save(stu);
-    repo.save(student);
+      studentrepo.save(stu);
+    studentrepo.save(student);
       
     }
 
@@ -88,20 +87,20 @@ public class Servicee {
     }
 
     public void deleteByStudentId(Long id) {
-        repo.deleteById(id);
+        studentrepo.deleteById(id);
     }
 
     public void addstudent(Student st) {
-        repo.save(st);
+        studentrepo.save(st);
     }
 
     public Laptop createNewLaptopInExisting(Long id, Laptop st) {
-        Student stt=repo.findById(id).orElseThrow();
+        Student stt=studentrepo.findById(id).orElseThrow();
        st.setStudent(stt);
        return lapo.save(st);
     }
     public List<Student> getStudentsByMarkRange(int minMark, int maxMark) {
-        return repo.findStudentsByMarkRange(minMark, maxMark);
+        return studentrepo.findStudentsByMarkRange(minMark, maxMark);
     }
 
 
