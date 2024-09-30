@@ -1,7 +1,6 @@
 package com.kgisl.MysqlRelationalMapping.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,86 +21,111 @@ public class Servicee {
     @Autowired
     private Lap lapo;
 
-
     @Transactional
-    public void add(Student st) {
+    public void add(Student student) {
 
-        for (Laptop ll : st.getLaptops()) {
-            ll.setStudent(st);
+        // First, save the Student entity
+        studentrepo.save(student);
+        // Now save the Laptop entities (this will set the foreign key automatically)
+        List<Laptop> laptops = student.getLaptops();
+        if (laptops != null && !laptops.isEmpty()) {
+            for (Laptop laptop : laptops) {
+                lapo.save(laptop); // Save each laptop associated with the student
+            }
         }
 
-        studentrepo.save(st);
-
+        // Now save the Laptop entities, if any exist
+        // if (student.getLaptops() != null && !student.getLaptops().isEmpty()) {
+        //     for (Laptop laptop : student.getLaptops()) {
+        //         laptop.setStudent(student); // Set the Student reference in each Laptop
+        //         lapo.save(laptop);    // Save each Laptop entity
+        //     }
+        // } else {
+        // }
     }
 
     public List<Student> get() {
         return studentrepo.findAll();
     }
+
     public List<Student> getAllStudentsWithLaptops() {
-        return studentrepo.findAll(); 
+        return studentrepo.findAll();
     }
 
-    public Laptop laptopById(Long lapId) {
-    return lapo.findById(lapId).orElse(null);
+    public Laptop laptopById(int lapId) {
+        return lapo.findById(lapId).orElse(null);
     }
 
-    public Student studentById(Long stId) {
+    public Student studentById(int stId) {
         return studentrepo.findById(stId).orElse(null);
     }
 
-    public List<Laptop> getLaptopsByStudentId(Long id){
-        return lapo.findBystudent_rollno(id);
+    public List<Laptop> getLaptopsByStudentId(int id) {
+        // Fetch the student by id
+        Student student = studentrepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+// Return the list of laptops for the student
+        return student.getLaptops();
     }
 
-    public void updatestudent(Long studentrollnumber,Student student) {
-       
-      Student stu=studentrepo.findById(studentrollnumber).orElseThrow();
-      stu.setName(student.getName());
-      stu.setAge(student.getAge());
-      stu.setGender(student.getGender());
-      stu.setMark(student.getMark());
-      studentrepo.save(stu);
-    studentrepo.save(student);
-      
+    public void updatestudent(int id, Student student) {
+
+        Student stu = studentrepo.findById(id).orElseThrow();
+        stu.setName(student.getName());
+        stu.setAge(student.getAge());
+        stu.setGender(student.getGender());
+        stu.setMark(student.getMark());
+        studentrepo.save(stu);
+        studentrepo.save(student);
+
     }
 
-    public void updatelaptop(Long laptopId, Laptop laptop) {
-        Laptop lap=lapo.findById(laptopId).orElseThrow();
+    public void updatelaptop(int laptopId, Laptop laptop) {
+        Laptop lap = lapo.findById(laptopId).orElseThrow();
         lap.setLname(laptop.getLname());
-       lapo.save(lap);
+        lapo.save(lap);
     }
 
     public List<Laptop> getAllLaptops() {
         return lapo.findAll();
     }
 
-    public List<Student> getStudentByLaptopId(String lname) {
-        return lapo.findBylname(lname).stream()
-        .map(Laptop::getStudent)
-        .distinct() // In case there are multiple laptops with the same name, we avoid duplicate students
-        .collect(Collectors.toList());
+    // public List<Student> getStudentByLaptopId(String lname) {
+    //     return lapo.findBylname(lname).stream()
+    //     .map(Laptop::getStudent)
+    //     .distinct() // In case there are multiple laptops with the same name, we avoid duplicate students
+    //     .collect(Collectors.toList());
+    // }
+    public void deleteByLaptopId(int id) {
+        lapo.deleteById(id);
     }
 
-    public void deleteByLaptopId(Long id) {
-       lapo.deleteById(id);
-    }
-
-    public void deleteByStudentId(Long id) {
+    public void deleteByStudentId(int id) {
         studentrepo.deleteById(id);
     }
 
-    public void addstudent(Student st) {
-        studentrepo.save(st);
+    // public void addstudent(Student st) {
+    //     studentrepo.save(st);
+    // }
+    public Laptop createNewLaptopInExisting(int id, Laptop st) {
+        // Student stt = studentrepo.findById(id).orElseThrow();
+        // st.setStudent(stt);
+        // return lapo.save(st);
+        // Fetch the existing student by id
+        Student student = studentrepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+// Add the new laptop to the student's list of laptops
+        student.getLaptops().add(st);
+
+// Save the student (will automatically save the new laptop)
+        studentrepo.save(student);
+
+        return st;
     }
 
-    public Laptop createNewLaptopInExisting(Long id, Laptop st) {
-        Student stt=studentrepo.findById(id).orElseThrow();
-       st.setStudent(stt);
-       return lapo.save(st);
-    }
     public List<Student> getStudentsByMarkRange(int minMark, int maxMark) {
         return studentrepo.findStudentsByMarkRange(minMark, maxMark);
     }
-
-
 }

@@ -35,13 +35,14 @@ public class Controller {
     // public void addstudent(@RequestBody Student st){
     // service.addstudent(st)
     // }
-    @GetMapping("/filter")
+    
+     @GetMapping("/filter")
     public List<Student> getStudentsByMarkRange(@RequestParam int minMark, @RequestParam int maxMark) {
         return service.getStudentsByMarkRange(minMark, maxMark);
     }
 
     @PostMapping("/createNewLaptopInExisting/{id}")
-    public Laptop createNewLaptopInExisting(@PathVariable Long id, @RequestBody Laptop st) {
+    public Laptop createNewLaptopInExisting(@PathVariable int id, @RequestBody Laptop st) {
         return service.createNewLaptopInExisting(id, st);
     }
 
@@ -61,42 +62,42 @@ public class Controller {
     }
 
     @GetMapping("/laptopById/{id}")     //used to getspecific laptop using id
-    public Laptop laptopById(@PathVariable("id") Long lapId) {
+    public Laptop laptopById(@PathVariable("id") int lapId) {
         return service.laptopById(lapId);
     }
 
     @GetMapping("/studentById/{id}")   //used to getspecific student using id
-    public Student studentById(@PathVariable("id") Long stId) {
+    public Student studentById(@PathVariable("id") int stId) {
         return service.studentById(stId);
     }
 
     @GetMapping("/sId/{id}") //used display the laptops specific studentid
-    public List<Laptop> getLaptopsByStudentId(@PathVariable("id") Long lapId) {
+    public List<Laptop> getLaptopsByStudentId(@PathVariable("id") int lapId) {
         return service.getLaptopsByStudentId(lapId);
     }
 
-    @GetMapping("/lId/{lapName}")  //used display the student specific laptopid
-    public List<Student> getStudentByLaptopId(@PathVariable String lapName) {
-        return service.getStudentByLaptopId(lapName);
-    }
+    // @GetMapping("/lId/{lapName}")  //used display the student specific laptopid
+    // public List<Student> getStudentByLaptopId(@PathVariable String lapName) {
+    //     return service.getStudentByLaptopId(lapName);
+    // }
 
     @PutMapping("/updatestudent/{id}")  //used to update specific student
-    public void updatestudent(@PathVariable("id") Long studentrollnumber, @RequestBody Student student) {
-        service.updatestudent(studentrollnumber, student);
+    public void updatestudent(@PathVariable("id") int id, @RequestBody Student student) {
+        service.updatestudent(id, student);
     }
 
     @PutMapping("/updatelaptop/{id}")  //used to update specific laptops
-    public void updatelaptop(@PathVariable("id") Long laptopId, @RequestBody Laptop laptop) {
+    public void updatelaptop(@PathVariable("id") int laptopId, @RequestBody Laptop laptop) {
         service.updatelaptop(laptopId, laptop);
     }
 
     @DeleteMapping("/deleteByLaptopId/{id}") //used to delete specificLaptop
-    public void deleteByLaptopId(@PathVariable("id") Long id) {
+    public void deleteByLaptopId(@PathVariable("id") int id) {
         service.deleteByLaptopId(id);
     }
 
     @DeleteMapping("/deleteByStudentId/{id}") //used to delete specificStudent
-    public void deleteByStudentId(@PathVariable("id") Long id) {
+    public void deleteByStudentId(@PathVariable("id") int id) {
         /*
       * this is parent database cannot delete but using orphanRemoval = true
       in student entity class it makes easier when we delete specific student
