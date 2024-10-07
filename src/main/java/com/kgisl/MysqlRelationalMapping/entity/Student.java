@@ -15,91 +15,91 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Student {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Column(nullable=false,unique=true)
-    private String rollnumber;
+	@Column(nullable = false, unique = true)
+	private String rollnumber;
 
-    private int mark;
-    private String name;
-    private int age;
-    private String gender;
+	private int mark;
+	// @Embedded
+	// private Name name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rollnumber", referencedColumnName = "rollnumber") // Creates the foreign key in Laptop
-    private List<Laptop> laptops = new ArrayList<>();
-    
-    public Student() {
-    }
+	private String name;
+	private int age;
+	private String gender;
 
-    public Student(int age, String gender, int id, int mark, String name, String rollnumber) {
-        this.age = age;
-        this.gender = gender;
-        this.id = id;
-        this.mark = mark;
-        this.name = name;
-        this.rollnumber = rollnumber;
-    }
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "rollnumber", referencedColumnName = "rollnumber") // Creates the foreign key in Laptop
+	private List<Laptop> laptops = new ArrayList<>();
 
-    public int getId() {
-        return id;
-    }
+	public Student() {
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public Student(int age, String gender, int id, int mark, String name, String rollnumber) {
+		this.age = age;
+		this.gender = gender;
+		this.id = id;
+		this.mark = mark;
+		this.name = name;
+		this.rollnumber = rollnumber;
+	}
 
-    public String getRollno() {
-        return rollnumber;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setRollno(String rollno) {
-        this.rollnumber = rollno;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public int getMark() {
-        return mark;
-    }
+	public String getRollno() {
+		return rollnumber;
+	}
 
-    public void setMark(int mark) {
-        this.mark = mark;
-    }
+	public void setRollno(String rollno) {
+		this.rollnumber = rollno;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public int getMark() {
+		return mark;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setMark(int mark) {
+		this.mark = mark;
+	}
 
-    public int getAge() {
-        return age;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getGender() {
-        return gender;
-    }
+	public int getAge() {
+		return age;
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	public void setAge(int age) {
+		this.age = age;
+	}
 
-    public List<Laptop> getLaptops() {
-        return laptops;
-    }
+	public String getGender() {
+		return gender;
+	}
 
-    public void setLaptops(List<Laptop> laptops) {
-        this.laptops = laptops;
-    }
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-    
+	public List<Laptop> getLaptops() {
+		return laptops;
+	}
+
+	public void setLaptops(List<Laptop> laptops) {
+		this.laptops = laptops;
+	}
 
 }

@@ -11,7 +11,7 @@ import com.kgisl.MysqlRelationalMapping.entity.Student;
 
 
 @Repository
-public interface  Repo extends JpaRepository<Student, Integer >{
+public interface  StudentRepository extends JpaRepository<Student, Integer >{
      @Query("SELECT s FROM Student s WHERE s.mark BETWEEN :minMark AND :maxMark")
     List<Student> findStudentsByMarkRange(int minMark, int maxMark);
    // Optional<Student> findById(int id);

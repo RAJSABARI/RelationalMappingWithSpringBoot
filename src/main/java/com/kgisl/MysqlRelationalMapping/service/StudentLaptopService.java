@@ -5,22 +5,35 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kgisl.MysqlRelationalMapping.daoa.CriteriaQueriesForListOfLaptops;
+import com.kgisl.MysqlRelationalMapping.daoa.JdbcRepo;
 import com.kgisl.MysqlRelationalMapping.entity.Laptop;
 import com.kgisl.MysqlRelationalMapping.entity.Student;
-import com.kgisl.MysqlRelationalMapping.repository.Lap;
-import com.kgisl.MysqlRelationalMapping.repository.Repo;
+import com.kgisl.MysqlRelationalMapping.repository.LaptopRepository;
+import com.kgisl.MysqlRelationalMapping.repository.StudentRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.transaction.Transactional;
 
 @Service
-public class Servicee {
+public class StudentLaptopService {
 
     @Autowired
-    private Repo studentrepo;
+    private StudentRepository studentrepo;
 
     @Autowired
-    private Lap lapo;
-
+    private LaptopRepository lapo;
+    
+    
+    @Autowired
+    private JdbcRepo jdbc;
+    
+    
+    @Autowired
+    private CriteriaQueriesForListOfLaptops cqlistoflaptops;
+    
+    
     @Transactional
     public void add(Student student) {
 
@@ -45,11 +58,13 @@ public class Servicee {
     }
 
     public List<Student> get() {
-        return studentrepo.findAll();
+        //return studentrepo.findAll();
+    	return jdbc.getAllStudentsWithLaptops();
     }
 
     public List<Student> getAllStudentsWithLaptops() {
         return studentrepo.findAll();
+    	//return jdbc.getAllStudentsWithLaptops();
     }
 
     public Laptop laptopById(int lapId) {
@@ -86,9 +101,14 @@ public class Servicee {
         lap.setLname(laptop.getLname());
         lapo.save(lap);
     }
-
+    private static final Logger logger = LoggerFactory.getLogger(StudentLaptopService.class);
     public List<Laptop> getAllLaptops() {
-        return lapo.findAll();
+        //return lapo.findAll();
+    	  if (cqlistoflaptops == null) {
+              logger.error("cqlistoflaptops is null!");
+          }
+          return cqlistoflaptops.getAllLaptops();
+      //  return cqlistoflaptops.getAllLaptops();
     }
 
     // public List<Student> getStudentByLaptopId(String lname) {
